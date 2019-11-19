@@ -51,9 +51,9 @@ public class TestChapter2 {
         }
         CleanFullSessionThread thread = new CleanFullSessionThread(0);
         thread.start();
-        thread.sleep(1000);
+        Thread.sleep(1000);
         thread.quit();
-        thread.sleep(2000);
+        Thread.sleep(2000);
         if(thread.isAlive()){
             throw  new RuntimeException("the session clean thread is still alive");
         }
@@ -61,6 +61,70 @@ public class TestChapter2 {
         for(Map.Entry<String,String> entry: cartMap.entrySet()){
             System.out.println("    "+entry.getKey()+":"+entry.getValue());
         }
+    }
+
+    @Test
+    public void testCacheRow() throws InterruptedException{
+        System.out.println("-----------testCacheRow---------");
+        chapter2.scheduleRowCache(conn, "itemA",5);
+        System.out.println("schedule like:");
+        Set<Tuple> s = conn.zrangeWithScores("schedule:", 0, -1);
+        for(Tuple tuple: s){
+            System.out.println("    "+tuple.getElement()+","+tuple.getScore());
+        }
+
+        System.out.println("delay like:");
+        Set<Tuple> delay = conn.zrangeWithScores("delay:", 0, -1);
+        for(Tuple tuple: delay){
+            System.out.println("    "+tuple.getElement()+","+tuple.getScore());
+        }
+        System.out.println("start a caching thread to cache data");
+        CacheRowsThread cacheRowsThread = new CacheRowsThread();
+        cacheRowsThread.start();
+
+        Thread.sleep(1000);
+        System.out.println("cached data likes:");
+        String data = conn.get("inv:itemA");
+        System.out.println(data);
+
+        System.out.println("check data in 5 seconds");
+        Thread.sleep(5000);
+        System.out.println("cached data like:");
+        data = conn.get("inv:itemA");
+        System.out.println(data);
+
+        System.out.println("force un-caching");
+        chapter2.scheduleRowCache(conn,"itemA",-1);
+        Thread.sleep(1000);
+        data = conn.get("inv:itemA");
+        System.out.println("cache was cleared?\n"+(data==null));
+
+        cacheRowsThread.quit();
+        Thread.sleep(2000);
+        if(cacheRowsThread.isAlive()){
+            throw  new RuntimeException("the session clean thread is still alive");
+        }
+    }
+
+    @Test
+    public void testCacheRequest(){
+        System.out.println("--------testCacheRequest-------");
+        String token = UUID.randomUUID().toString();
+        Callback callback = new Callback() {
+            public String call(String request) {
+                return "content for "+ request;
+            }
+        };
+        chapter2.updateToken(conn, token, "username", "itemA");
+        String url = "http://test.io/?item=itemA";
+        String result = chapter2.cacheRequest(conn, url, callback);
+        System.out.println("initial content:"+result);
+
+        String result2 = chapter2.cacheRequest(conn, url, null);
+        System.out.println("we ended get the same response!!\n"+result2);
+        assert result.equals(result2);
+        assert !chapter2.canCache(conn, "http://test.io/?item=itemX&_=123456");
+        assert !chapter2.canCache(conn, "http://test.io/");
     }
 }
 

@@ -30,8 +30,8 @@ public class Chapter2 {
         conn.zadd("recent:", timestamp, token);
         if(item != null){
             conn.zadd("viewed:"+token, timestamp, item);
-            conn.zremrangeByRank("viewd:"+token, 0, -26);
-            conn.zincrby("viewd:",-1, item);
+            conn.zremrangeByRank("viewed:"+token, 0, -26);
+            conn.zincrby("viewed:",-1, item);
         }
     }
 
@@ -101,7 +101,7 @@ public class Chapter2 {
         }
 
         String pageKey = "cache:"+hashRequest(request);
-        String content = conn.get("pageKey");
+        String content = conn.get(pageKey);
         if(content == null && callback != null){
             content = callback.call(request);
             conn.setex(pageKey, 300, content);
@@ -125,3 +125,4 @@ public class Chapter2 {
 interface Callback{
     public String call(String request);
 }
+
