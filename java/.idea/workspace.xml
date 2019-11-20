@@ -2,14 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a54ca184-c543-48e9-ab3b-7e79d100284f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/Chapter4.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/TestChapter4.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Chapter2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Chapter2.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/TestChapter1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TestChapter1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/TestChapter2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TestChapter2.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -22,17 +21,17 @@
     <session id="-1862506432">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="1" />
+          <entry key="project.closed" value="2" />
           <entry key="project.open.time.28" value="1" />
-          <entry key="project.open.time.3" value="1" />
-          <entry key="project.opened" value="2" />
+          <entry key="project.open.time.3" value="2" />
+          <entry key="project.opened" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="class" value="15" />
           <entry key="iml" value="1" />
-          <entry key="java" value="4" />
+          <entry key="java" value="6" />
           <entry key="xml" value="2" />
         </counts>
       </usages-collector>
@@ -40,20 +39,20 @@
         <counts>
           <entry key="CLASS" value="15" />
           <entry key="IDEA_MODULE" value="1" />
-          <entry key="JAVA" value="4" />
+          <entry key="JAVA" value="6" />
           <entry key="XML" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="9490" />
-          <entry key="txt" value="64" />
+          <entry key="java" value="12892" />
+          <entry key="txt" value="104" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="9490" />
-          <entry key="PLAIN_TEXT" value="64" />
+          <entry key="JAVA" value="12892" />
+          <entry key="PLAIN_TEXT" value="104" />
         </counts>
       </usages-collector>
     </session>
@@ -72,44 +71,47 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Chapter2.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="395">
+            <state relative-caret-position="1387">
               <caret line="80" column="42" selection-start-line="80" selection-start-column="33" selection-end-line="80" selection-end-column="42" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#191#192#0" expanded="true" />
-                <element signature="e#239#240#0" expanded="true" />
-                <element signature="e#1754#1770#0" expanded="true" />
-                <element signature="e#2615#2616#0" expanded="true" />
-                <element signature="e#2661#2662#0" expanded="true" />
-                <element signature="e#2723#2724#0" expanded="true" />
-                <element signature="e#2764#2765#0" expanded="true" />
-                <element signature="e#2812#2813#0" expanded="true" />
-                <element signature="e#2869#2870#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/TestChapter2.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="570">
+              <caret line="30" column="23" lean-forward="true" selection-start-line="30" selection-start-column="23" selection-end-line="30" selection-end-column="23" />
+              <folding>
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/test/java/TestChapter2.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Chapter4.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="95">
-              <caret line="5" column="27" lean-forward="true" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="27" />
+            <state relative-caret-position="135">
+              <caret line="87" column="90" selection-start-line="87" selection-start-column="90" selection-end-line="87" selection-end-column="90" />
               <folding>
-                <element signature="e#4364#4482#0" expanded="true" />
-                <element signature="e#4481#4482#0" expanded="true" />
-                <element signature="e#317#318#0" expanded="true" />
-                <element signature="e#343#344#0" expanded="true" />
-                <element signature="e#1004#1012#0" expanded="true" />
-                <element signature="e#1556#1557#0" expanded="true" />
-                <element signature="e#1582#1583#0" expanded="true" />
-                <element signature="e#2198#2206#0" expanded="true" />
-                <element signature="e#2660#2661#0" expanded="true" />
-                <element signature="e#2699#2700#0" expanded="true" />
-                <element signature="e#2724#2725#0" expanded="true" />
-                <element signature="e#2751#2752#0" expanded="true" />
-                <element signature="e#3992#3993#0" expanded="true" />
-                <element signature="e#4017#4018#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/TestChapter4.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="350">
+              <caret line="78" selection-start-line="78" selection-end-line="78" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#3017#3018#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -140,6 +142,9 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/Chapter2.java" />
         <option value="$PROJECT_DIR$/src/test/java/TestChapter2.java" />
+        <option value="$PROJECT_DIR$/src/test/java/TestChapter.java" />
+        <option value="$PROJECT_DIR$/src/test/java/TestChapter4.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Chapter4.java" />
       </list>
     </option>
   </component>
@@ -197,6 +202,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="AndroidView" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -220,21 +226,6 @@
               <item name="redisInAction" type="b2602c69:ProjectViewProjectNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="redisInAction" type="b2602c69:ProjectViewProjectNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="Chapter2.java" type="529ef68f:ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
-            </path>
-            <path>
-              <item name="redisInAction" type="b2602c69:ProjectViewProjectNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -249,13 +240,12 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
-      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1574146896103" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1574217876794" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -273,7 +263,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.TestChapter2">
+  <component name="RunManager" selected="JUnit.TestChapter4.testBenchmarkUpdateToken">
     <configuration name="TestChapter2" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="redisInAction" />
       <option name="PACKAGE_NAME" value="" />
@@ -292,50 +282,50 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TestChapter2.testCacheRow" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="TestChapter4.testBenchmarkUpdateToken" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="redisInAction" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="TestChapter2" />
-      <option name="METHOD_NAME" value="testCacheRow" />
+      <option name="MAIN_CLASS_NAME" value="TestChapter4" />
+      <option name="METHOD_NAME" value="testBenchmarkUpdateToken" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TestChapter2.testLoginCookies" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="TestChapter4.testPurchaseItem" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="redisInAction" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="TestChapter2" />
-      <option name="METHOD_NAME" value="testLoginCookies" />
+      <option name="MAIN_CLASS_NAME" value="TestChapter4" />
+      <option name="METHOD_NAME" value="testPurchaseItem" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TestChapter2.testShoppingCartCookies" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="TestChapter.testListItem" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="redisInAction" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="TestChapter2" />
-      <option name="METHOD_NAME" value="testShoppingCartCookies" />
+      <option name="MAIN_CLASS_NAME" value="TestChapter" />
+      <option name="METHOD_NAME" value="testListItem" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
-      <item itemvalue="JUnit.TestChapter2.testLoginCookies" />
-      <item itemvalue="JUnit.TestChapter2.testShoppingCartCookies" />
-      <item itemvalue="JUnit.TestChapter2.testCacheRow" />
       <item itemvalue="JUnit.TestChapter2.testCacheRequest" />
       <item itemvalue="JUnit.TestChapter2" />
+      <item itemvalue="JUnit.TestChapter.testListItem" />
+      <item itemvalue="JUnit.TestChapter4.testPurchaseItem" />
+      <item itemvalue="JUnit.TestChapter4.testBenchmarkUpdateToken" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.TestChapter4.testBenchmarkUpdateToken" />
+        <item itemvalue="JUnit.TestChapter4.testPurchaseItem" />
+        <item itemvalue="JUnit.TestChapter.testListItem" />
         <item itemvalue="JUnit.TestChapter2" />
         <item itemvalue="JUnit.TestChapter2.testCacheRequest" />
-        <item itemvalue="JUnit.TestChapter2.testCacheRow" />
-        <item itemvalue="JUnit.TestChapter2.testShoppingCartCookies" />
-        <item itemvalue="JUnit.TestChapter2.testLoginCookies" />
       </list>
     </recent_temporary>
   </component>
@@ -350,7 +340,8 @@
       <option name="presentableId" value="Default" />
       <updated>1574044688522</updated>
       <workItem from="1574044691765" duration="6009000" />
-      <workItem from="1574125018639" duration="11770000" />
+      <workItem from="1574125018639" duration="12048000" />
+      <workItem from="1574214915723" duration="2776000" />
     </task>
     <task id="LOCAL-00001" summary="redisInAction chapter01">
       <created>1574059342071</created>
@@ -373,49 +364,56 @@
       <option name="project" value="LOCAL" />
       <updated>1574134893789</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="redisInAction chapter2 testCacheRequest/testCacheRow">
+      <created>1574146967394</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1574146967394</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="TestChapter2_testShoppingCartCookies - 2019.11.19 at 11h 40m 07s.xml">
-      <configuration name="TestChapter2.testShoppingCartCookies" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="TestChapter2_testCacheRow - 2019.11.19 at 14h 40m 31s.xml">
-      <configuration name="TestChapter2.testCacheRow" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="TestChapter2_testCacheRequest - 2019.11.19 at 14h 48m 48s.xml">
-      <configuration name="TestChapter2.testCacheRequest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="TestChapter2_testCacheRequest - 2019.11.19 at 14h 49m 01s.xml">
-      <configuration name="TestChapter2.testCacheRequest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="TestChapter2_testCacheRequest - 2019.11.19 at 14h 54m 17s.xml">
-      <configuration name="TestChapter2.testCacheRequest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="TestChapter2_testCacheRequest - 2019.11.19 at 14h 57m 52s.xml">
-      <configuration name="TestChapter2.testCacheRequest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="TestChapter2_testCacheRequest - 2019.11.19 at 14h 58m 03s.xml">
-      <configuration name="TestChapter2.testCacheRequest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="TestChapter2_testCacheRequest - 2019.11.19 at 14h 58m 49s.xml">
-      <configuration name="TestChapter2.testCacheRequest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="TestChapter2_testCacheRequest - 2019.11.19 at 14h 59m 30s.xml">
-      <configuration name="TestChapter2.testCacheRequest" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="TestChapter2 - 2019.11.19 at 15h 00m 24s.xml">
       <configuration name="TestChapter2" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="TestChapter_testListItem - 2019.11.20 at 10h 26m 48s.xml">
+      <configuration name="TestChapter.testListItem" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TestChapter4_testPurchaseItem - 2019.11.20 at 10h 36m 05s.xml">
+      <configuration name="TestChapter4.testPurchaseItem" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TestChapter4_testPurchaseItem - 2019.11.20 at 10h 37m 25s.xml">
+      <configuration name="TestChapter4.testPurchaseItem" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TestChapter4_testPurchaseItem - 2019.11.20 at 10h 38m 24s.xml">
+      <configuration name="TestChapter4.testPurchaseItem" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TestChapter4_testPurchaseItem - 2019.11.20 at 10h 39m 11s.xml">
+      <configuration name="TestChapter4.testPurchaseItem" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TestChapter4_testPurchaseItem - 2019.11.20 at 10h 39m 19s.xml">
+      <configuration name="TestChapter4.testPurchaseItem" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TestChapter4_testBenchmarkUpdateToken - 2019.11.20 at 10h 40m 22s.xml">
+      <configuration name="TestChapter4.testBenchmarkUpdateToken" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TestChapter4_testBenchmarkUpdateToken - 2019.11.20 at 10h 40m 37s.xml">
+      <configuration name="TestChapter4.testBenchmarkUpdateToken" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TestChapter4_testBenchmarkUpdateToken - 2019.11.20 at 10h 41m 00s.xml">
+      <configuration name="TestChapter4.testBenchmarkUpdateToken" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="17779000" />
+    <option name="totallyTimeSpent" value="20833000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1358" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25266525" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2553305" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -455,7 +453,8 @@
     <MESSAGE value="redisInAction chapter01" />
     <MESSAGE value="redisInAction chapter2" />
     <MESSAGE value="redisInAction chapter2 testCookie/testShoppingCart" />
-    <option name="LAST_COMMIT_MESSAGE" value="redisInAction chapter2 testCookie/testShoppingCart" />
+    <MESSAGE value="redisInAction chapter2 testCacheRequest/testCacheRow" />
+    <option name="LAST_COMMIT_MESSAGE" value="redisInAction chapter2 testCacheRequest/testCacheRow" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -471,6 +470,12 @@
           <line>71</line>
           <properties />
           <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/TestChapter4.java</url>
+          <line>15</line>
+          <properties />
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -511,13 +516,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="665">
-          <caret line="35" selection-start-line="35" selection-end-line="35" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://E:/.m2/repository/junit/junit/4.12/junit-4.12.jar!/org/junit/internal/requests/ClassRequest.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="326">
@@ -550,9 +548,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="216">
           <caret line="65" selection-start-line="65" selection-end-line="65" />
-          <folding>
-            <element signature="e#1948#1949#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -567,10 +562,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-646">
           <caret line="23" column="19" selection-start-line="23" selection-start-column="19" selection-end-line="23" selection-end-column="19" />
-          <folding>
-            <element signature="e#8565#8566#0" expanded="true" />
-            <element signature="e#8599#8600#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -581,25 +572,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Chapter2.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="395">
-          <caret line="80" column="42" selection-start-line="80" selection-start-column="33" selection-end-line="80" selection-end-column="42" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#191#192#0" expanded="true" />
-            <element signature="e#239#240#0" expanded="true" />
-            <element signature="e#1754#1770#0" expanded="true" />
-            <element signature="e#2615#2616#0" expanded="true" />
-            <element signature="e#2661#2662#0" expanded="true" />
-            <element signature="e#2723#2724#0" expanded="true" />
-            <element signature="e#2764#2765#0" expanded="true" />
-            <element signature="e#2812#2813#0" expanded="true" />
-            <element signature="e#2869#2870#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://E:/.m2/repository/redis/clients/jedis/3.1.0/jedis-3.1.0.jar!/redis/clients/jedis/Connection.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="275">
@@ -607,25 +579,50 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="665">
+          <caret line="35" selection-start-line="35" selection-end-line="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Chapter2.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1387">
+          <caret line="80" column="42" selection-start-line="80" selection-start-column="33" selection-end-line="80" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/TestChapter2.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="5" column="27" lean-forward="true" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="27" />
+        <state relative-caret-position="570">
+          <caret line="30" column="23" lean-forward="true" selection-start-line="30" selection-start-column="23" selection-end-line="30" selection-end-column="23" />
           <folding>
-            <element signature="e#4364#4482#0" expanded="true" />
-            <element signature="e#4481#4482#0" expanded="true" />
-            <element signature="e#317#318#0" expanded="true" />
-            <element signature="e#343#344#0" expanded="true" />
-            <element signature="e#1004#1012#0" expanded="true" />
-            <element signature="e#1556#1557#0" expanded="true" />
-            <element signature="e#1582#1583#0" expanded="true" />
-            <element signature="e#2198#2206#0" expanded="true" />
-            <element signature="e#2660#2661#0" expanded="true" />
-            <element signature="e#2699#2700#0" expanded="true" />
-            <element signature="e#2724#2725#0" expanded="true" />
-            <element signature="e#2751#2752#0" expanded="true" />
-            <element signature="e#3992#3993#0" expanded="true" />
-            <element signature="e#4017#4018#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/TestChapter4.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="350">
+          <caret line="78" selection-start-line="78" selection-end-line="78" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3017#3018#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Chapter4.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="87" column="90" selection-start-line="87" selection-start-column="90" selection-end-line="87" selection-end-column="90" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
