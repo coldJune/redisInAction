@@ -10,6 +10,10 @@ import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Tuple;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.text.Collator;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -65,9 +69,9 @@ public class Chapter5 {
         String startKey = commonDest + ":start";
         long end = System.currentTimeMillis() + timeout;
         while(System.currentTimeMillis() < end){
-            conn.watch(startKey.getBytes());
+           byte[] existing=conn.get(startKey.getBytes());
             String hourStart = TIMESTAMP.format(new Date());
-            byte[] existing = conn.get(startKey.getBytes());
+            conn.watch(startKey.getBytes());
             conn.multi();
             if(existing != null && COLLATOR.compare(new String(existing), hourStart) < 0){
                 conn.rename(commonDest.getBytes(), (commonDest+":last").getBytes());
@@ -86,7 +90,6 @@ public class Chapter5 {
             }
             return;
         }
-        conn.multi();
     }
 
     /**
@@ -205,10 +208,26 @@ public class Chapter5 {
         stats.put("stddev", Math.pow(numerator/(count>1?count-1:1),.5));
         return stats;
     }
+    private byte[] toByteArray(Object o){
+        byte[] bytes = null;
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        try{
+            ObjectOutputStream oos = new ObjectOutputStream(bos);
+            oos.writeObject(o);
+            oos.flush();
+            bytes = bos.toByteArray();
+            oos.close();
+            bos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bytes;
+    }
     public static void main(String[] args){
         System.out.println(TIMESTAMP.format(new Date()));
         Jedis conn = new Jedis();
 
     }
+
 
 }
