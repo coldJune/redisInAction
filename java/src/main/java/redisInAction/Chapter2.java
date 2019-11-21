@@ -1,3 +1,4 @@
+package redisInAction;
 
 import redis.clients.jedis.Jedis;
 

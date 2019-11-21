@@ -1,5 +1,8 @@
+package redisInAction;
+
 import org.junit.Test;
 import redis.clients.jedis.Jedis;
+import redisInAction.Chapter1;
 
 import java.util.List;
 import java.util.Map;

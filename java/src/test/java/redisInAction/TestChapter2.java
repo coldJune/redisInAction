@@ -1,3 +1,5 @@
+package redisInAction;
+
 import com.google.gson.Gson;
 import org.junit.Test;
 import redis.clients.jedis.Jedis;

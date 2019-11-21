@@ -1,6 +1,9 @@
+package redisInAction;
+
 import org.junit.Test;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Tuple;
+import redisInAction.Chapter4;
 
 import java.util.Map;
 import java.util.Set;
