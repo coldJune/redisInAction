@@ -3,11 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="a54ca184-c543-48e9-ab3b-7e79d100284f" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/redisInAction/Chapter5.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/redisInAction/Chapter5.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/redisInAction/TestChapter5.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/redisInAction/TestChapter5.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -74,11 +70,18 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="java" value="1087" />
+          <entry key="txt" value="27" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JAVA" value="1087" />
+          <entry key="PLAIN_TEXT" value="27" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="1" />
         </counts>
       </usages-collector>
     </session>
@@ -123,8 +126,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/test/java/redisInAction/TestChapter5.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="129" column="16" selection-start-line="129" selection-start-column="16" selection-end-line="129" selection-end-column="16" />
+            <state relative-caret-position="483">
+              <caret line="128" column="23" selection-start-line="128" selection-start-column="23" selection-end-line="128" selection-end-column="23" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1230#2011#0" expanded="true" />
@@ -267,42 +270,39 @@
               <item name="redisInAction" type="b2602c69:ProjectViewProjectNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="redisInAction" type="b2602c69:ProjectViewProjectNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="redisInAction" type="b2602c69:ProjectViewProjectNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="redisInAction" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="redisInAction" type="b2602c69:ProjectViewProjectNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="target" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="redisInAction" type="b2602c69:ProjectViewProjectNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="target" type="462c0819:PsiDirectoryNode" />
+              <item name="classes" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="redisInAction" type="b2602c69:ProjectViewProjectNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="target" type="462c0819:PsiDirectoryNode" />
+              <item name="classes" type="462c0819:PsiDirectoryNode" />
               <item name="redisInAction" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -494,7 +494,14 @@
       <option name="project" value="LOCAL" />
       <updated>1574324584322</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="redisInAction chapter5 testCounters and testStats">
+      <created>1574339817507</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1574339817507</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -530,13 +537,13 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="42611000" />
+    <option name="totallyTimeSpent" value="42881000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="730" y="0" width="710" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.48952097" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.48952097" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -545,7 +552,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.498503" visible="true" weight="0.44096386" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.498503" weight="0.44096386" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3987952" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -580,7 +587,8 @@
     <MESSAGE value="redisInAction chapter2 testCacheRequest/testCacheRow" />
     <MESSAGE value="redisInAction chapter4" />
     <MESSAGE value="redisInAction chapter5 and with spring boot" />
-    <option name="LAST_COMMIT_MESSAGE" value="redisInAction chapter5 and with spring boot" />
+    <MESSAGE value="redisInAction chapter5 testCounters and testStats" />
+    <option name="LAST_COMMIT_MESSAGE" value="redisInAction chapter5 testCounters and testStats" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -774,8 +782,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/redisInAction/TestChapter5.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="129" column="16" selection-start-line="129" selection-start-column="16" selection-end-line="129" selection-end-column="16" />
+        <state relative-caret-position="483">
+          <caret line="128" column="23" selection-start-line="128" selection-start-column="23" selection-end-line="128" selection-end-column="23" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1230#2011#0" expanded="true" />
