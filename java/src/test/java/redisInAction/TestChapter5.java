@@ -1,6 +1,8 @@
 package redisInAction;
 
+import org.javatuples.Pair;
 import org.junit.Test;
+import org.junit.jupiter.api.TestTemplate;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +19,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @RunWith(SpringRunner.class)
@@ -89,4 +92,51 @@ public class TestChapter5 {
         }
     }
 
+    @Test
+    public void testCounters(){
+        System.out.println("-------testCounters-------");
+        System.out.println("update counter");
+        redisTemplate.executePipelined(new RedisCallback<Object>() {
+            long now = System.currentTimeMillis()/1000;
+
+            public Object doInRedis(RedisConnection redisConnection) throws DataAccessException {
+                for(int i=0;i<10;i++){
+                    int count = (int)(Math.random()*5)+1;
+                    chapter5.updateCounter(redisConnection, "test", count, now+1);
+                }
+                return null;
+            }
+        }, new StringRedisSerializer());
+
+        List<Pair<Integer, Integer>> counter = chapter5.getCounter(redisTemplate, "test", 1);
+        System.out.println("per-second counters:"+counter.size());
+        for(Pair<Integer, Integer> count: counter){
+            System.out.println("    "+count.getValue0()+":"+count.getValue1());
+        }
+        counter = chapter5.getCounter(redisTemplate, "test", 5);
+        System.out.println("5-second counters:"+counter.size());
+        for(Pair<Integer, Integer> count: counter){
+            System.out.println("    "+count.getValue0()+":"+count.getValue1());
+        }
+    }
+
+    @Test
+    public void testStats(){
+        System.out.println("-----testStats----");
+
+        redisTemplate.executePipelined(new RedisCallback<Object>() {
+            public Object doInRedis(RedisConnection redisConnection) throws DataAccessException {
+                double value = (Math.random()*11)+5;
+                chapter5.updateStats(redisConnection, "temp","example", value);
+                return null;
+            }
+        });
+
+        Map<String, Double> stats = chapter5.getStats(redisTemplate, "temp","example");
+        for(Map.Entry sta:stats.entrySet()){
+            System.out.println("    "+sta.getKey()+':'+sta.getValue());
+        }
+
+
+    }
 }

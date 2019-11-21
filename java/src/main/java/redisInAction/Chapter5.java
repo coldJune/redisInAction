@@ -2,13 +2,15 @@ package redisInAction;
 
 import com.sun.xml.internal.ws.api.pipe.Tube;
 import org.javatuples.Pair;
+import org.javatuples.Tuple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisZSetCommands;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.Tuple;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -195,12 +197,12 @@ public class Chapter5 {
      * @param type
      * @return
      */
-    public Map<String, Double> getStats(RedisConnection conn, String context, String type){
+    public Map<String, Double> getStats(StringRedisTemplate conn, String context, String type){
         String key = "stats:"+context+':'+type;
         Map<String, Double> stats = new HashMap<String, Double>();
-        Set<RedisZSetCommands.Tuple>data = conn.zRangeWithScores(key.getBytes(), 0, -1);
-        for(RedisZSetCommands.Tuple tuple: data){
-            stats.put(new String(tuple.getValue()), tuple.getScore());
+        Set<ZSetOperations.TypedTuple<String>>data = conn.opsForZSet().rangeWithScores(key, 0, -1);
+        for(ZSetOperations.TypedTuple<String> tuple: data){
+            stats.put(tuple.getValue(), tuple.getScore());
         }
         stats.put("average", stats.get("sum")/stats.get("count"));
         double numerator = stats.get("sumsq") - Math.pow(stats.get("sum"),2)/stats.get("count");
@@ -208,6 +210,7 @@ public class Chapter5 {
         stats.put("stddev", Math.pow(numerator/(count>1?count-1:1),.5));
         return stats;
     }
+
     private byte[] toByteArray(Object o){
         byte[] bytes = null;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
