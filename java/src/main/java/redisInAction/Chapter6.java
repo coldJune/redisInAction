@@ -10,6 +10,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class Chapter6 {
@@ -134,4 +135,83 @@ public class Chapter6 {
         return items;
     }
 
+    /**
+     *
+     * @param lockName
+     * @return
+     */
+    public String acquireLock(String lockName){
+        return acquireLock(lockName, 10000);
+    }
+
+    /**
+     *
+     * @param lockName
+     * @param timeout
+     * @return
+     */
+
+    public String acquireLock(String lockName, long timeout){
+        String identifier = UUID.randomUUID().toString();
+        long end = System.currentTimeMillis() + timeout;
+        while(System.currentTimeMillis() < end){
+            if(redisTemplate.opsForValue().setIfAbsent("lock:"+lockName, identifier)){
+                return identifier;
+            }
+
+            try {
+                Thread.sleep(1);
+            }catch (InterruptedException e){
+                Thread.currentThread().interrupt();
+            }
+        }
+        return null;
+    }
+
+    /**
+     *
+     * @param lockName
+     * @param acquireTimeout
+     * @param lockTimeout
+     * @return
+     */
+    public String acquireLockWithTimeout(String lockName, long acquireTimeout, long lockTimeout){
+        String identifier = UUID.randomUUID().toString();
+        String lockKey = "lock:"+lockName;
+        long end = System.currentTimeMillis() + acquireTimeout;
+        while(System.currentTimeMillis() < end){
+            if(redisTemplate.opsForValue().setIfAbsent(lockKey, identifier)){
+                redisTemplate.expire(lockKey, lockTimeout, TimeUnit.MILLISECONDS);
+                return identifier;
+            }
+            if(redisTemplate.getExpire(lockKey) == -1){
+                redisTemplate.expire(lockKey, lockTimeout, TimeUnit.MILLISECONDS);
+            }
+
+            try {
+                Thread.sleep(1);
+            }catch (InterruptedException e){
+                Thread.currentThread().interrupt();
+            }
+        }
+        return null;
+    }
+    public boolean releaseLock(String lockName, String identifier){
+        String lockKey = "lock:"+lockName;
+        while(true){
+            redisTemplate.watch(lockKey);
+            if(identifier.equals(redisTemplate.opsForValue().get(lockKey))){
+                redisTemplate.multi();
+                redisTemplate.delete(lockKey);
+                List<Object> results = redisTemplate.exec();
+                if(results == null){
+                    continue;
+                }
+                return true;
+            }
+            redisTemplate.unwatch();
+            break;
+        }
+        return false;
+    }
 }

@@ -94,6 +94,28 @@ public class TestChapter6 {
         assert results.size() == 1;
 
     }
+
+    @Test
+    public void testLock() throws InterruptedException{
+        System.out.println("-----testLock----------");
+        redisTemplate.delete("lock:testlock");
+        System.out.println("try to acquire lock");
+        assert chapter6.acquireLockWithTimeout("testlock",1000, 1000) != null;
+        System.out.println("try to acquire the same lock without release");
+        assert chapter6.acquireLockWithTimeout("testlock",10, 1000) == null;
+        System.out.println("acquire fail");
+        System.out.println();
+        Thread.sleep(1000);
+        System.out.println("try to acquire lock again");
+        String lockId = "";
+        assert (lockId=chapter6.acquireLockWithTimeout("testlock",1000, 1000)) != null;
+        assert chapter6.releaseLock("testlock",lockId);
+        System.out.println("release lock");
+        System.out.println("try to acquire lock again");
+        assert chapter6.acquireLockWithTimeout("testlock",1000, 1000) != null;
+        System.out.println("get it");
+
+    }
     @Test
     public void clean(){
         redisTemplate.delete("members:test");
