@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.connection.RedisZSetCommands;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -196,6 +197,13 @@ public class Chapter6 {
         }
         return null;
     }
+
+    /**
+     *
+     * @param lockName
+     * @param identifier
+     * @return
+     */
     public boolean releaseLock(String lockName, String identifier){
         String lockKey = "lock:"+lockName;
         while(true){
@@ -213,5 +221,78 @@ public class Chapter6 {
             break;
         }
         return false;
+    }
+
+    /**
+     *
+     * @param semname
+     * @param limit
+     * @param timeout
+     * @return
+     */
+    public String acquireFairSemaphore(String semname, int limit, long timeout){
+        String identifier = UUID.randomUUID().toString();
+        String czset = semname+":owner";
+        String ctr = semname+":counter";
+
+        long now = System.currentTimeMillis();
+        redisTemplate.multi();
+        redisTemplate.opsForZSet().removeRangeByScore(semname,Double.MIN_VALUE, now - timeout);
+        ArrayList<String> oherKeys = new ArrayList<String>();
+        oherKeys.add(semname);
+        redisTemplate.opsForZSet().intersectAndStore(czset,oherKeys,czset, RedisZSetCommands.Aggregate.SUM, RedisZSetCommands.Weights.of(1,0));
+        redisTemplate.opsForValue().increment(ctr);
+        List<Object> results = redisTemplate.exec();
+        int counter = ((Long)results.get(results.size() - 1)).intValue();
+
+        redisTemplate.multi();
+        redisTemplate.opsForZSet().add(semname, identifier, now);
+        redisTemplate.opsForZSet().add(czset, identifier, counter);
+        redisTemplate.opsForZSet().rank(czset, identifier);
+        results = redisTemplate.exec();
+        int result = ((Long)results.get(results.size() - 1)).intValue();
+        if(result < limit){
+            return identifier;
+        }
+        redisTemplate.multi();
+        redisTemplate.opsForZSet().remove(semname, identifier);
+        redisTemplate.opsForZSet().remove(czset, identifier);
+        redisTemplate.exec();
+        return null;
+    }
+
+    /**
+     *
+     * @param semname
+     * @param identifier
+     * @return
+     */
+    public boolean releaseFairSemphore(String semname, String identifier){
+        redisTemplate.multi();
+        redisTemplate.opsForZSet().remove(semname, identifier);
+        redisTemplate.opsForZSet().remove(semname+":owner", identifier);
+        List<Object> results = redisTemplate.exec();
+        return(Long) results.get(results.size()-1) == 1;
+    }
+
+    /**
+     *
+     * @param semname
+     * @param limit
+     * @param timeout
+     * @return
+     */
+    public String acquireFairSemphoreWithLock(String semname, int limit, long timeout){
+        String identifier = acquireLockWithTimeout(semname,10,10);
+        if(identifier!=null){
+            try {
+              return acquireFairSemaphore(semname, limit, timeout);
+            }catch (Exception e){
+
+            }finally {
+                releaseLock(semname,identifier);
+            }
+        }
+        return null;
     }
 }

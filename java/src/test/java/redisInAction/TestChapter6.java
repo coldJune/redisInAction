@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.awt.datatransfer.StringSelection;
 import java.util.*;
 
 @RunWith(SpringRunner.class)
@@ -116,8 +117,39 @@ public class TestChapter6 {
         System.out.println("get it");
 
     }
+
+    @Test
+    public void testCountingSemaphore()throws InterruptedException{
+        System.out.println("------testCountingSemaphore-----");
+        System.out.println("get 3 semphores");
+        for(int i =0; i<3; i++){
+            assert  chapter6.acquireFairSemphoreWithLock("testsem", 3, 1000) !=null;
+        }
+        System.out.println("done");
+        System.out.println("get more");
+        assert chapter6.acquireFairSemphoreWithLock("testsem",3,1000) == null;
+        System.out.println("can't\n");
+
+        System.out.println("wait for timeout");
+        Thread.sleep(2000);
+        System.out.println("try again");
+        String id = chapter6.acquireFairSemphoreWithLock("testsem",3, 1000);
+        assert id != null;
+        System.out.println("we get one");
+        System.out.println("release it");
+        assert chapter6.releaseFairSemphore("testsem", id);
+        System.out.println("get 3 again");
+        for(int i =3; i<3; i++){
+            assert  chapter6.acquireFairSemphoreWithLock("testsem", 3, 1000) !=null;
+        }
+        System.out.println("we get again");
+    }
     @Test
     public void clean(){
-        redisTemplate.delete("members:test");
+        ArrayList<String> delKeys = new ArrayList<String>();
+        delKeys.add("testsem");
+        delKeys.add("testsem:owner");
+        delKeys.add("testsem:counter");
+        redisTemplate.delete(delKeys);
     }
 }
