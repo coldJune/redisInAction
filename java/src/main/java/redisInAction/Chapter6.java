@@ -1,5 +1,8 @@
 package redisInAction;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import org.javatuples.Tuple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
@@ -7,6 +10,7 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisZSetCommands;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
 
@@ -294,5 +298,148 @@ public class Chapter6 {
             }
         }
         return null;
+    }
+
+    /**
+     *
+     * @param sender
+     * @param recipients
+     * @param message
+     * @return
+     */
+    public String createChat(String sender, Set<String> recipients, String message){
+        String chatId =String.valueOf(redisTemplate.opsForValue().increment("ids:chat:"));
+        return createChat(sender, recipients, message, chatId);
+    }
+    /**
+     *
+     * @param sender
+     * @param recipients
+     * @param message
+     * @param chatId
+     * @return
+     */
+    public String createChat(String sender, Set<String> recipients, String message,String chatId){
+        recipients.add(sender);
+        redisTemplate.multi();
+        for(String recipient: recipients){
+            redisTemplate.opsForZSet().add("chat:"+chatId, recipient, 0);
+            redisTemplate.opsForZSet().add("seen:"+recipient, chatId, 0);
+        }
+        redisTemplate.exec();
+        return sendMessage(chatId,sender, message);
+    }
+
+    /**
+     *
+     * @param chatId
+     * @param sender
+     * @param message
+     * @return
+     */
+    public String sendMessage(String chatId, String sender, String message){
+        String identifier = acquireLockWithTimeout("chat:"+chatId, 1000, 1000);
+        if(identifier == null){
+            throw new RuntimeException("could not get the lock");
+        }
+        try{
+            long messageId = redisTemplate.opsForValue().increment("ids:"+chatId);
+            HashMap<String, Object> values = new HashMap<String, Object>();
+            values.put("id",messageId);
+            values.put("ts", System.currentTimeMillis());
+            values.put("sender", sender);
+            values.put("message", message);
+            String packed = new Gson().toJson(values);
+            redisTemplate.opsForZSet().add("msgs:"+chatId, packed, messageId);
+        }finally {
+            releaseLock("chat:"+chatId, identifier);
+        }
+        return chatId;
+    }
+
+    /**
+     *
+     * @param recipient
+     * @return
+     */
+    public List<ChatMessage> fetchPendingMessage(String recipient){
+        Set<ZSetOperations.TypedTuple<String>> seenSet = redisTemplate.opsForZSet().rangeWithScores("seen:"+recipient, 0, -1);
+        List<ZSetOperations.TypedTuple<String>> seenList= new ArrayList<ZSetOperations.TypedTuple<String>>(seenSet);
+
+        redisTemplate.multi();
+        for(ZSetOperations.TypedTuple tuple: seenList){
+            String chatId = (String)tuple.getValue();
+            double seenId = tuple.getScore();
+            redisTemplate.opsForZSet().rangeByScore("msgs:"+chatId,seenId+1,Double.MAX_VALUE);
+        }
+        List<Object> resuts = redisTemplate.exec();
+        Gson gson = new Gson();
+        Iterator<ZSetOperations.TypedTuple<String>> seenIterator = seenList.iterator();
+        Iterator<Object> resultsIterator = resuts.iterator();
+
+        List<ChatMessage> chatMessages = new ArrayList<ChatMessage>();
+        List<Object[]> seenUpdates = new ArrayList<Object[]>();
+        List<Object[]> msgRemoves = new ArrayList<Object[]>();
+        while(seenIterator.hasNext()){
+            ZSetOperations.TypedTuple<String> seen = seenIterator.next();
+            Set<String> messageString = (Set<String>)resultsIterator.next();
+            if(messageString.size() == 0){
+                continue;
+            }
+
+            int seenId = 0;
+            String chatId = seen.getValue();
+            List<Map<String, Object>> messages = new ArrayList<Map<String, Object>>();
+            for(String messageJson: messageString){
+                Map<String, Object> message = (Map<String,Object>) gson.fromJson(messageJson, new TypeToken<Map<String, Object>>(){}.getType());
+                int messageId = ((Double)message.get("id")).intValue();
+                if(messageId > seenId){
+                    seenId = messageId;
+                }
+                message.put("id", messageId);
+                messages.add(message);
+            }
+            redisTemplate.opsForZSet().add("chat:"+chatId, recipient, seenId);
+            seenUpdates.add(new Object[]{"seen:"+recipient, seenId, chatId});
+
+            Set<ZSetOperations.TypedTuple<String>> midIdSet = redisTemplate.opsForZSet().rangeWithScores("chat:"+chatId, 0, 0);
+            if(midIdSet.size() >0){
+                msgRemoves.add(new Object[]{"msgs:"+chatId, midIdSet.iterator().next().getScore()});
+            }
+            chatMessages.add(new ChatMessage(chatId, messages));
+        }
+
+        redisTemplate.multi();
+        for(Object[] seenUpdate: seenUpdates){
+            redisTemplate.opsForZSet().add(
+                    (String)seenUpdate[0],
+                    (String)seenUpdate[2],
+                    (Integer)seenUpdate[1]
+            );
+        }
+        for(Object[] msgRemove: msgRemoves){
+            redisTemplate.opsForZSet().removeRangeByScore((String)msgRemove[0],0, (Double)msgRemove[1]);
+        }
+        redisTemplate.exec();
+        return chatMessages;
+    }
+}
+
+class ChatMessage{
+    public String chatId;
+    public List<Map<String, Object>> message;
+
+    public ChatMessage(String chatId, List<Map<String, Object>> message){
+        this.chatId = chatId;
+        this.message = message;
+    }
+
+    public boolean equals(Object other){
+        if(!(other instanceof ChatMessage)){
+            return false;
+        }
+
+        ChatMessage ohterCm = (ChatMessage)other;
+        return chatId.equals(ohterCm.chatId) && message.equals(ohterCm.message);
     }
 }

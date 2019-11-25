@@ -5,6 +5,9 @@ import org.junit.runner.RunWith;
 import org.junit.runner.Runner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -144,12 +147,45 @@ public class TestChapter6 {
         }
         System.out.println("we get again");
     }
+
+
+    @Test
+    public void testFetchingMessage(){
+        System.out.println("-----------testFetchingMessage-----------");
+        System.out.println("create a new chat session ");
+        Set<String> recipients = new HashSet<String>();
+        recipients.add("cold");
+        recipients.add("june");
+        recipients.add("pho");
+        String chatId = chapter6.createChat("july", recipients, "message1");
+        System.out.println("send messages");
+        for(int i = 2; i<5; i++){
+            chapter6.sendMessage(chatId, "july", "message "+ i);
+        }
+        System.out.println();
+        List<ChatMessage> result1 = chapter6.fetchPendingMessage("cold");
+        List<ChatMessage> result2 = chapter6.fetchPendingMessage("june");
+        assert result1.equals(result2);
+        System.out.println("there are chat messages");
+        for(ChatMessage chat:result1){
+            System.out.println("chatId:"+chat.chatId);
+            System.out.println("messages:");
+            for(Map<String, Object> message:chat.message){
+                System.out.println("    "+message);
+            }
+        }
+        result1 = chapter6.fetchPendingMessage("cold");
+        assert result1.size() == 0;
+        System.out.println("cold has seen all message");
+    }
     @Test
     public void clean(){
-        ArrayList<String> delKeys = new ArrayList<String>();
-        delKeys.add("testsem");
-        delKeys.add("testsem:owner");
-        delKeys.add("testsem:counter");
-        redisTemplate.delete(delKeys);
+
+        redisTemplate.execute(new RedisCallback<Object>() {
+            public Object doInRedis(RedisConnection connection) throws DataAccessException {
+                connection.flushAll();
+                return null;
+            }
+        });
     }
 }
