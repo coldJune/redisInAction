@@ -10,9 +10,7 @@ import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -52,10 +50,47 @@ public class TestChapter7 {
             public Object doInRedis(RedisConnection connection) throws DataAccessException {
                 String id = chapter7.interset(connection,10, "content", "indexed");
                 assert test.equals(redisTemplate.opsForSet().members("idx:"+id));
+
+                id = chapter7.interset(connection, 10, "content", "ignored");
+                assert redisTemplate.opsForSet().members("idx:"+id).isEmpty();
+
+                id = chapter7.union(connection, 10, "content","ignored");
+                assert test.equals(redisTemplate.opsForSet().members("idx:"+id));
+
+                id = chapter7.difference(connection, 10, "content","ignored");
+                assert test.equals(redisTemplate.opsForSet().members("idx:"+id));
+
+                id = chapter7.difference(connection, 10, "content","indexed");
+                assert redisTemplate.opsForSet().members("idx:"+id).isEmpty();
                 return null;
             }
         });
 
+    }
+
+    @Test
+    public void testParseQuery(){
+        System.out.println("--------testParseQuery-------------");
+        String queryString = "test query without stopwords";
+        Query query = chapter7.parse(queryString);
+        String[] words = queryString.split(" ");
+        for(int i =0; i<words.length; i++){
+            List<String> word = new ArrayList<String>();
+            word.add(words[i]);
+            System.out.println(word.toString());
+            assert word.equals(query.all.get(i));
+        }
+
+        assert query.unwanted.isEmpty();
+
+        queryString = "test +query without -stopwords";
+        query = chapter7.parse(queryString);
+        System.out.println(query.all.toString());
+        System.out.println(query.unwanted.toString());
+        assert "test".equals(query.all.get(0).get(0));
+        assert "query".equals(query.all.get(0).get(1));
+        assert "without".equals(query.all.get(1).get(0));
+        assert "stopwords".equals(query.unwanted.toArray()[0]);
     }
 
     @Test

@@ -20,7 +20,9 @@ public class Chapter7 {
 
     private static final Pattern QUERY_RE = Pattern.compile("[+-]?[a-z']{2,}");
     private static final Pattern WORDS_RE = Pattern.compile("[a-z']{2,}");
-    private static final Set<String> STOP_WORDS = new HashSet<String>();;
+    private static final Set<String> STOP_WORDS = new HashSet<String>();
+    ;
+
     static {
         for (String word :
                 ("able about across after all almost also am among " +
@@ -34,23 +36,21 @@ public class Chapter7 {
                         "some than that the their them then there these " +
                         "they this tis to too twas us wants was we were " +
                         "what when where which while who whom why will " +
-                        "with would yet you your").split(" "))
-        {
+                        "with would yet you your").split(" ")) {
             STOP_WORDS.add(word);
         }
     }
 
     /**
-     *
      * @param content
      * @return
      */
-    public Set<String> tokenize(String content){
+    public Set<String> tokenize(String content) {
         Set<String> words = new HashSet<String>();
         Matcher matcher = WORDS_RE.matcher(content);
-        while(matcher.find()){
+        while (matcher.find()) {
             String word = matcher.group().trim();
-            if(word.length() > 2 && !STOP_WORDS.contains(word)){
+            if (word.length() > 2 && !STOP_WORDS.contains(word)) {
                 words.add(word);
             }
         }
@@ -58,52 +58,94 @@ public class Chapter7 {
     }
 
     /**
-     *
      * @param docid
      * @param content
      * @return
      */
-    public int indexDocument(String docid, String content){
+    public int indexDocument(String docid, String content) {
         Set<String> words = tokenize(content);
         redisTemplate.multi();
-        for(String word:words){
-            redisTemplate.opsForSet().add("idx:"+word, docid);
+        for (String word : words) {
+            redisTemplate.opsForSet().add("idx:" + word, docid);
         }
         return redisTemplate.exec().size();
     }
 
     /**
-     *
      * @param method
      * @param ttl
      * @param items
      * @return
      */
-    public String setCommon(RedisSetCommands redisConnection, String method, int ttl, String ... items){
+    public String setCommon(RedisSetCommands redisConnection, String method, int ttl, String... items) {
 
-        byte [][] keys = new byte[items.length][];
-        for(int i = 0; i< items.length; i++){
-            keys[i] = ("idx:"+items[i]).getBytes();
+        byte[][] keys = new byte[items.length][];
+        for (int i = 0; i < items.length; i++) {
+            keys[i] = ("idx:" + items[i]).getBytes();
         }
         String id = UUID.randomUUID().toString();
         try {
             //redisTemplate和RedisConnection均无法使用反射获取到具体方法
-            redisConnection.getClass().getDeclaredMethod(method,byte[].class, byte[][].class )
-                    .invoke(redisConnection, ("idx:"+id).getBytes(), keys);
-        }catch (Exception e){
+            redisConnection.getClass().getDeclaredMethod(method, byte[].class, byte[][].class)
+                    .invoke(redisConnection, ("idx:" + id).getBytes(), keys);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        redisTemplate.expire("idx:"+id, ttl, TimeUnit.SECONDS);
+        redisTemplate.expire("idx:" + id, ttl, TimeUnit.SECONDS);
         return id;
     }
 
-    public String interset(RedisSetCommands redisConnection,int ttl, String... items){
-        return setCommon(redisConnection,"sInterStore", ttl, items);
+    public String interset(RedisSetCommands redisConnection, int ttl, String... items) {
+        return setCommon(redisConnection, "sInterStore", ttl, items);
     }
-    public String union(LettuceConnection redisConnection,int ttl, String... items){
-        return setCommon(redisConnection,"sUnionStore", ttl, items);
+
+    public String union(RedisSetCommands redisConnection, int ttl, String... items) {
+        return setCommon(redisConnection, "sUnionStore", ttl, items);
     }
-    public String difference(LettuceConnection redisConnection,int ttl, String... items){
-        return setCommon(redisConnection,"sDiffStore", ttl, items);
+
+    public String difference(RedisSetCommands redisConnection, int ttl, String... items) {
+        return setCommon(redisConnection, "sDiffStore", ttl, items);
     }
+
+    /**
+     *
+     * @param queryString
+     * @return
+     */
+    public Query parse(String queryString){
+        Query query = new Query();
+        Set<String> current = new HashSet<String>();
+        Matcher matcher = QUERY_RE.matcher(queryString.toLowerCase());
+        while(matcher.find()){
+            String word = matcher.group().trim();
+            char prefix = word.charAt(0);
+            if(prefix == '+' || prefix == '-'){
+                word = word.substring(1);
+            }
+
+            if(word.length()<2 || STOP_WORDS.contains(word)){
+                continue;
+            }
+            if(prefix == '-'){
+                query.unwanted.add(word);
+                continue;
+            }
+
+            if(!current.isEmpty() && prefix !='+'){
+                query.all.add(new ArrayList<String>(current));
+                current.clear();
+            }
+            current.add(word);
+        }
+
+        if(!current.isEmpty()){
+            query.all.add(new ArrayList<String>(current));
+        }
+        return query;
+    }
+}
+
+class Query{
+    public final List<List<String>> all = new ArrayList<List<String>>();
+    public  final Set<String> unwanted = new HashSet<String>();
 }
