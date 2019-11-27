@@ -48,10 +48,10 @@ public class TestChapter7 {
         test.add("test");
         redisTemplate.execute(new RedisCallback<Object>() {
             public Object doInRedis(RedisConnection connection) throws DataAccessException {
-                String id = chapter7.interset(connection,10, "content", "indexed");
+                String id = chapter7.intersect(connection,10, "content", "indexed");
                 assert test.equals(redisTemplate.opsForSet().members("idx:"+id));
 
-                id = chapter7.interset(connection, 10, "content", "ignored");
+                id = chapter7.intersect(connection, 10, "content", "ignored");
                 assert redisTemplate.opsForSet().members("idx:"+id).isEmpty();
 
                 id = chapter7.union(connection, 10, "content","ignored");
@@ -93,6 +93,50 @@ public class TestChapter7 {
         assert "stopwords".equals(query.unwanted.toArray()[0]);
     }
 
+    @Test
+    public void testParseAndSearch(){
+        System.out.println("-----------testParseAndSearch----------");
+        chapter7.indexDocument("test",CONTENT);
+        Set<String> test = new HashSet<String>();
+        test.add("test");
+        String id = chapter7.parseAndSearch("content", 30);
+        assert test.equals(redisTemplate.opsForSet().members("idx:"+id));
+
+        id = chapter7.parseAndSearch("content indexed random",30);
+        assert test.equals(redisTemplate.opsForSet().members("idx:"+id));
+
+        id = chapter7.parseAndSearch("content +indexed random",30);
+        assert test.equals(redisTemplate.opsForSet().members("idx:"+id));
+
+        id = chapter7.parseAndSearch("content indexed +random",30);
+        assert test.equals(redisTemplate.opsForSet().members("idx:"+id));
+        id = chapter7.parseAndSearch("content indexed -random",30);
+        assert redisTemplate.opsForSet().members("idx:"+id).isEmpty();
+
+    }
+
+    @Test
+    public void testSearchWithSort(){
+        System.out.println("------testSearchWithSort----------");
+        chapter7.indexDocument("test1", CONTENT);
+        chapter7.indexDocument("test2", CONTENT);
+        HashMap<String,String> values = new HashMap<String, String>();
+        values.put("updated","12345");
+        values.put("id", "10");
+        redisTemplate.opsForHash().putAll("kb:doc:test1",values);
+
+        values.put("updated","54321");
+        values.put("id","1");
+        redisTemplate.opsForHash().putAll("kb:doc:test2",values);
+
+        SearchResult sr = chapter7.searchAndSort("content","-updated");
+        assert "test2".equals(sr.results.get(0));
+        assert "test1".equals(sr.results.get(1));
+
+        sr = chapter7.searchAndSort("content","-id");
+        assert "test1".equals(sr.results.get(0));
+        assert "test2".equals(sr.results.get(1));
+    }
     @Test
     public void clean(){
 

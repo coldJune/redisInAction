@@ -1,13 +1,21 @@
 package redisInAction;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.DefaultSortParameters;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisSetCommands;
+import org.springframework.data.redis.connection.SortParameters;
 import org.springframework.data.redis.connection.lettuce.LettuceConnection;
+import org.springframework.data.redis.core.BulkMapper;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.query.SortQuery;
+import org.springframework.data.redis.core.query.SortQueryBuilder;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -21,7 +29,7 @@ public class Chapter7 {
     private static final Pattern QUERY_RE = Pattern.compile("[+-]?[a-z']{2,}");
     private static final Pattern WORDS_RE = Pattern.compile("[a-z']{2,}");
     private static final Set<String> STOP_WORDS = new HashSet<String>();
-    ;
+
 
     static {
         for (String word :
@@ -95,7 +103,7 @@ public class Chapter7 {
         return id;
     }
 
-    public String interset(RedisSetCommands redisConnection, int ttl, String... items) {
+    public String intersect(RedisSetCommands redisConnection, int ttl, String... items) {
         return setCommon(redisConnection, "sInterStore", ttl, items);
     }
 
@@ -143,9 +151,106 @@ public class Chapter7 {
         }
         return query;
     }
+
+    /**
+     *
+     * @param queryString
+     * @param ttl
+     * @return
+     */
+    public String parseAndSearch(String queryString, final int ttl){
+        final Query query = parse(queryString);
+        if(query.all.isEmpty()){
+            return null;
+        }
+
+        final List<String> toIntersect = new ArrayList<String>();
+        redisTemplate.execute(new RedisCallback<Object>() {
+            public Object doInRedis(RedisConnection connection) throws DataAccessException {
+                for (List<String> syn : query.all) {
+                    if (syn.size() > 1) {
+                        toIntersect.add(union(connection,ttl, syn.toArray(new String[syn.size()])));
+                    }else {
+                        toIntersect.add(syn.get(0));
+                    }
+
+                }
+                return null;
+            }
+        });
+
+        final ArrayList<String> intersectResults = new ArrayList<String>();
+        if(toIntersect.size() > 1){
+            redisTemplate.execute(new RedisCallback<Object>() {
+                public Object doInRedis(RedisConnection connection) throws DataAccessException {
+                    intersectResults.add(intersect(connection, ttl, toIntersect.toArray(new String[toIntersect.size()])));
+                    return null;
+                }
+            });
+        }else{
+            intersectResults.add(toIntersect.get(0));
+        }
+        String intersectResult = intersectResults.get(0);
+        intersectResults.clear();
+
+        if(!query.unwanted.isEmpty()){
+            final ArrayList<String> keys = new ArrayList<String>(query.unwanted);
+            keys.add(keys.size(),intersectResult);
+            redisTemplate.execute(new RedisCallback<Object>() {
+                public Object doInRedis(RedisConnection connection) throws DataAccessException {
+                    intersectResults.add(difference(connection, ttl, keys.toArray(new String[keys.size()])));
+                    return null;
+                }
+            });
+            intersectResult = intersectResults.get(0);
+        }
+
+        return intersectResult;
+    }
+
+    /**
+     *
+     * @param queryString
+     * @param sort
+     * @return
+     */
+    public SearchResult searchAndSort(String queryString, String sort){
+        boolean desc = sort.startsWith("-");
+        if(desc){
+            sort = sort.substring(1);
+        }
+        boolean alpha = !"updated".equals(sort) && !"id".equals(sort);
+        String by = "kb:doc:*->"+sort;
+
+        String id = parseAndSearch(queryString, 30);
+        redisTemplate.multi();
+        redisTemplate.opsForSet().size("idx:"+id);
+        SortQueryBuilder<String> builder =  SortQueryBuilder.sort("idx:"+id);
+        if(desc){
+            builder.order(SortParameters.Order.DESC);
+        }
+        builder.alphabetical(alpha);
+        builder.by(by);
+
+        redisTemplate.sort(builder.build());
+        List<Object> results =redisTemplate.exec();
+        return new SearchResult(id, (Long)results.get(0),(List<String>)results.get(1));
+    }
 }
 
 class Query{
     public final List<List<String>> all = new ArrayList<List<String>>();
     public  final Set<String> unwanted = new HashSet<String>();
+}
+
+class SearchResult {
+    public final String id;
+    public final long total;
+    public final List<String> results;
+
+    public SearchResult(String id, long total, List<String> results) {
+        this.id = id;
+        this.total = total;
+        this.results = results;
+    }
 }
